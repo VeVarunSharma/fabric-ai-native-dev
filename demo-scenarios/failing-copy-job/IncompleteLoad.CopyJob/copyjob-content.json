@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "CopySalesOrders",
+        "type": "Copy",
+        "source": {
+          "schema": "demo_source",
+          "table": "SalesOrders"
+        },
+        "destination": {
+          "schema": "demo_bronze",
+          "table": "SalesOrders"
+        }
+      },
+      {
+        "name": "CopySalesCustomers",
+        "type": "Copy",
+        "source": {
+          "schema": "demo_source",
+          "table": "SalesCustomers"
+        },
+        "destination": {
+          "schema": "demo_bronze",
+          "table": "SalesCustomers"
+        }
+      }
+    ]
+  }
+}
