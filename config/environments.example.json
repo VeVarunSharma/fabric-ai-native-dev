@@ -1,0 +1,14 @@
+{
+  "nonprod": {
+    "branch": "develop",
+    "workspaceName": "<PROJECT>_NonProd",
+    "variableLibraryName": "EnvironmentConfig",
+    "activeValueSetName": "nonprod"
+  },
+  "prod": {
+    "branch": "main",
+    "workspaceName": "<PROJECT>_Prod",
+    "variableLibraryName": "EnvironmentConfig",
+    "activeValueSetName": "prod"
+  }
+}

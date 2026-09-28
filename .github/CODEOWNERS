@@ -1,0 +1,7 @@
+# Replace this owner with the customer platform team when copying the demo.
+* @VeVarunSharma
+
+# Deployment and policy changes always need platform-team review.
+/.github/workflows/ @VeVarunSharma
+/scripts/ @VeVarunSharma
+/.github/copilot-instructions.md @VeVarunSharma

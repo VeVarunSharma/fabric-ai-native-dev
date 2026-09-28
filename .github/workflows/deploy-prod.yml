@@ -1,0 +1,94 @@
+name: Deploy Fabric production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fabric-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      FABRIC_TENANT_ID: ${{ vars.FABRIC_TENANT_ID }}
+      FABRIC_CLIENT_ID: ${{ vars.FABRIC_CLIENT_ID }}
+      FABRIC_WORKSPACE_ID: ${{ vars.FABRIC_WORKSPACE_ID }}
+      FABRIC_REPOSITORY_DIRECTORY: ${{ vars.FABRIC_REPOSITORY_DIRECTORY }}
+      FABRIC_ENVIRONMENT: ${{ vars.FABRIC_ENVIRONMENT }}
+      FABRIC_VARIABLE_LIBRARY_NAME: ${{ vars.FABRIC_VARIABLE_LIBRARY_NAME }}
+      FABRIC_ACTIVE_VALUE_SET: ${{ vars.FABRIC_ACTIVE_VALUE_SET }}
+
+    steps:
+      - name: Check out reviewed definitions
+        uses: actions/checkout@v4
+
+      - name: Set up supported Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install deployment dependencies
+        run: python -m pip install --disable-pip-version-check -e ".[deploy]"
+
+      - name: Validate deployment configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          required=(
+            FABRIC_TENANT_ID
+            FABRIC_CLIENT_ID
+            FABRIC_WORKSPACE_ID
+            FABRIC_REPOSITORY_DIRECTORY
+            FABRIC_ENVIRONMENT
+          )
+          for name in "${required[@]}"; do
+            if [ -z "${!name:-}" ]; then
+              echo "::error::$name is not configured in the production environment."
+              exit 1
+            fi
+          done
+
+      - name: Deploy Fabric item definitions
+        env:
+          FABRIC_CLIENT_SECRET: ${{ secrets.FABRIC_CLIENT_SECRET }}
+        run: |
+          python scripts/deploy_fabric.py \
+            --workspace-id "$FABRIC_WORKSPACE_ID" \
+            --repository-directory "$FABRIC_REPOSITORY_DIRECTORY" \
+            --environment "$FABRIC_ENVIRONMENT"
+
+      - name: Select and verify production value set
+        if: ${{ vars.FABRIC_VARIABLE_LIBRARY_NAME != '' && vars.FABRIC_ACTIVE_VALUE_SET != '' }}
+        env:
+          FABRIC_CLIENT_SECRET: ${{ secrets.FABRIC_CLIENT_SECRET }}
+        run: |
+          python scripts/set_active_value_set.py \
+            --workspace-id "$FABRIC_WORKSPACE_ID" \
+            --library-name "$FABRIC_VARIABLE_LIBRARY_NAME" \
+            --value-set "$FABRIC_ACTIVE_VALUE_SET"
+
+      - name: Write deployment summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## Fabric production deployment"
+            echo "- Source commit: \`$GITHUB_SHA\`"
+            echo "- Workspace: \`$FABRIC_WORKSPACE_ID\`"
+            echo "- Environment/value set: \`$FABRIC_ENVIRONMENT\`"
+            echo "- Overlapping production deployments are serialized."
+            echo "- Target-only orphan deletion is disabled by default."
+            if [ -n "${FABRIC_VARIABLE_LIBRARY_NAME:-}" ] && [ -n "${FABRIC_ACTIVE_VALUE_SET:-}" ]; then
+              echo "- Variable Library verification: configured."
+            else
+              echo "- Variable Library verification: skipped until a library is configured."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
