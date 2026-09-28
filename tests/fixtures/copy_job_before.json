@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "Copy",
+        "source": {
+          "schema": "sales",
+          "table": "Orders"
+        },
+        "destination": {
+          "schema": "bronze",
+          "table": "Orders"
+        }
+      },
+      {
+        "type": "Copy",
+        "source": {
+          "schema": "sales",
+          "table": "LegacyCustomers"
+        },
+        "destination": {
+          "schema": "bronze",
+          "table": "LegacyCustomers"
+        }
+      }
+    ]
+  }
+}

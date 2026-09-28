@@ -1,0 +1,15 @@
+{
+  "workspaceHead": "abc123",
+  "remoteCommitHash": "def456",
+  "changes": [
+    {
+      "itemMetadata": {
+        "itemType": "CopyJob",
+        "displayName": "LoadReferenceData"
+      },
+      "workspaceChange": "Modified",
+      "remoteChange": "Modified",
+      "conflictType": "Conflict"
+    }
+  ]
+}

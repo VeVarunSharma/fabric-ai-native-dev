@@ -1,0 +1,22 @@
+{
+  "workspaceHead": "abc123",
+  "remoteCommitHash": "def456",
+  "changes": [
+    {
+      "itemMetadata": {
+        "itemType": "Notebook",
+        "displayName": "PrepareSales"
+      },
+      "workspaceChange": "Modified",
+      "conflictType": "None"
+    },
+    {
+      "itemMetadata": {
+        "itemType": "DataPipeline",
+        "displayName": "LoadCustomers"
+      },
+      "remoteChange": "Modified",
+      "conflictType": "None"
+    }
+  ]
+}

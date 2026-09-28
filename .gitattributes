@@ -1,0 +1,7 @@
+* text=auto
+
+# Normalize Fabric-generated item source to reduce formatting-only sync diffs.
+*.Notebook/** text eol=lf
+*.DataPipeline/** text eol=lf
+*.SparkJobDefinition/** text eol=lf
+.platform text eol=lf
