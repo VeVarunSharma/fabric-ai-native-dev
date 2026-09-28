@@ -1,0 +1,4 @@
+{
+  "clientSecret": "demo-only-not-a-real-secret",
+  "explanation": "This synthetic value exists only to exercise validation."
+}
