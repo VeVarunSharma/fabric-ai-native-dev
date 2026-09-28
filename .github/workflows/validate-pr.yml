@@ -37,6 +37,7 @@ jobs:
 
       - name: Enforce Fabric review policy
         run: |
+          set -o pipefail
           python scripts/validate_repo_policy.py \
             --changed-files-file "$RUNNER_TEMP/changed-files.txt" \
             --pr-body-file "$RUNNER_TEMP/pr-body.md" \
