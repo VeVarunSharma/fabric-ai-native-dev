@@ -1,0 +1,38 @@
+{
+  "properties": {
+    "displayName": "Load reference data",
+    "description": "Illustrative Copy Job definition for the passing review demo.",
+    "tableMappings": [
+      {
+        "source": {
+          "schema": "sales",
+          "table": "Orders"
+        },
+        "destination": {
+          "schema": "bronze",
+          "table": "Orders"
+        }
+      },
+      {
+        "source": {
+          "schema": "sales",
+          "table": "Customers"
+        },
+        "destination": {
+          "schema": "bronze",
+          "table": "Customers"
+        }
+      },
+      {
+        "source": {
+          "schema": "sales",
+          "table": "Products"
+        },
+        "destination": {
+          "schema": "bronze",
+          "table": "Products"
+        }
+      }
+    ]
+  }
+}
