@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "QuickCiDemo",
+    "description": "Self-contained sales quality demo for the Fabric CI/CD workflow."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "4ea1b68a-a9eb-49be-95bf-3155c1f11982"
+  }
+}
